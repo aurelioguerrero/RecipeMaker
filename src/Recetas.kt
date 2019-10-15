@@ -1,6 +1,7 @@
 fun main(args: Array<String>) {
-    val misRecetas = mutableListOf<String>()
-    val menuPrincipal = """:: Bienvenido a Recipe Maker
+    val misRecetas = mutableListOf<String?>()
+    val listaIngredientes=  listOf("Agua","Leche","Carne","Verduras","Frutas","Cereal","Huevos","Aceite")
+    val menuPrincipal = """:: Bienvenido a Recipe Maker ::
         
         Selecciona la opción deseada
         1. Hacer una receta
@@ -8,25 +9,67 @@ fun main(args: Array<String>) {
         3. Salir
         
     """.trimIndent()
-
-    try{
-        terminar@ while(true){
+    terminar@ while(true){
+        try{
             println(menuPrincipal)
             var respuesta:Int? = readLine().toString().toInt() ?: 0
-            println("Usted seleccionó: $respuesta")
-            when(respuesta){
-                3 -> {println("Gracias por usar el Recipe Maker :)")
-                    break@terminar}
+            when(respuesta) {
+                3 -> {
+                    println("Gracias por usar el Recipe Maker :)")
+                    break@terminar
+                }
                 1 -> {
                     println("Ingrese el nombre de la receta: ")
-                    var receta:String? = readLine().toString() ?: "Receta"+misRecetas.lastIndex.toString()
-                    println("Nombre de la receta: $receta")
+                    var nombreReceta: String? = readLine().toString() ?: "Receta sin nombre"
+                    var receta: String = ""
+                    var respuestaIngrediente: Int? = 0
+                    while (respuestaIngrediente != 9) {
+                        try {
+                            val menuIngredientes = """Seleccione los ingredientes de $nombreReceta: 
+
+        1. Agua
+        2. Leche
+        3. Carne
+        4. Verduras
+        5. Frutas
+        6. Cereal
+        7. Huevos
+        8. Aceite
+        9. --Para salir y guardar--""".trimIndent()
+                            println(menuIngredientes)
+                            respuestaIngrediente = readLine().toString().toInt() ?: 0
+                            if (respuestaIngrediente in 1..9) {
+                                if (respuestaIngrediente == 9) {
+                                    receta = "$nombreReceta: ${receta.substring(0, receta.length - 2)}."
+                                    misRecetas.add(receta)
+                                    println("La receta ha sido guardada :)")
+                                } else {
+                                    receta += listaIngredientes[respuestaIngrediente - 1]
+                                }
+                                receta += ", "
+                            } else {
+                                println("La opción $respuestaIngrediente no es válida")
+                            }
+                        }catch (e:NumberFormatException){
+                            println("¡Por favor ingrese un valor numérico válido!")
+                        }
+                    }
                     continue@terminar
                 }
-                2 -> {}
+                2 -> {
+                    println(":: Mis recetas ::")
+                    for (i in 0..misRecetas.size - 1) {
+                        println("${i + 1}. ${misRecetas[i]}")
+                    }
+                    println()
+                }
+                else -> {
+                    println("¡El valor ingresado no es válido!")
+                    continue@terminar
+                }
             }
+        }catch (e:NumberFormatException){
+            println("¡Por favor ingrese un valor numérico válido!")
         }
-    }catch (e:NumberFormatException){
-        println("¡Por favor ingrese un valor numérico válido!")
     }
 }
