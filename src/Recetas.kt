@@ -25,18 +25,7 @@ fun main(args: Array<String>) {
                     var respuestaIngrediente: Int? = 0
                     while (respuestaIngrediente != 9) {
                         try {
-                            val menuIngredientes = """Seleccione los ingredientes de $nombreReceta: 
-
-        1. Agua
-        2. Leche
-        3. Carne
-        4. Verduras
-        5. Frutas
-        6. Cereal
-        7. Huevos
-        8. Aceite
-        9. --Para salir y guardar--""".trimIndent()
-                            println(menuIngredientes)
+                            makeRecipe(nombreReceta)
                             respuestaIngrediente = readLine().toString().toInt() ?: 0
                             if (respuestaIngrediente in 1..9) {
                                 if (respuestaIngrediente == 9) {
@@ -57,11 +46,7 @@ fun main(args: Array<String>) {
                     continue@terminar
                 }
                 2 -> {
-                    println(":: Mis recetas ::")
-                    for (i in 0..misRecetas.size - 1) {
-                        println("${i + 1}. ${misRecetas[i]}")
-                    }
-                    println()
+                    viewRecipe(misRecetas)
                 }
                 else -> {
                     println("¡El valor ingresado no es válido!")
@@ -72,4 +57,27 @@ fun main(args: Array<String>) {
             println("¡Por favor ingrese un valor numérico válido!")
         }
     }
+}
+
+fun makeRecipe(nombreReceta: String?): Unit{
+    val menuIngredientes = """Seleccione los ingredientes de $nombreReceta: 
+
+        1. Agua
+        2. Leche
+        3. Carne
+        4. Verduras
+        5. Frutas
+        6. Cereal
+        7. Huevos
+        8. Aceite
+        9. --Para salir y guardar--""".trimIndent()
+    println(menuIngredientes)
+}
+
+fun viewRecipe(recetas: MutableList<String?>): Unit{
+    println(":: Mis recetas ::")
+    for (i in 0..recetas.size - 1) {
+        println("${i + 1}. ${recetas[i]}")
+    }
+    println()
 }
